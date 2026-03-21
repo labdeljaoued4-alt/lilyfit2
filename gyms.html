@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LylyFit - Gyms & Partners</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                        },
+                        silver: {
+                            100: '#f3f4f6',
+                            400: '#9ca3af',
+                            500: '#6b7280',
+                            700: '#374151',
+                            800: '#1f2937',
+                            900: '#111827',
+                        }
+                    },
+                    fontFamily: {
+                        display: ['Orbitron', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass-card">
+        <div class="container mx-auto px-4 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href='index.html'">
+                <div class="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+                    <span class="text-white font-bold text-xl">L</span>
+                </div>
+                <span class="text-2xl font-display font-bold tracking-tighter text-white">Lyly<span class="text-primary-400">Fit</span></span>
+            </div>
+
+            <div class="hidden md:flex items-center gap-8">
+                <a href="index.html" class="hover:text-primary-400 transition-colors" data-i18n="home">Home</a>
+                <a href="competitions.html" class="hover:text-primary-400 transition-colors" data-i18n="competitions">Competitions</a>
+                <a href="gyms.html" class="text-primary-400 font-semibold" data-i18n="gyms">Gyms</a>
+                <button class="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2 px-6 rounded-lg transition-all" id="connectWalletBtn" onclick="loginPi()" data-i18n="connect_wallet">Connect Wallet</button>
+                <div class="relative group">
+                    <select id="langSelector" class="bg-silver-800 text-silver-100 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 cursor-pointer appearance-none border border-silver-700 hover:border-primary-500 transition-colors pr-8">
+                        <option value="en">English</option>
+                        <option value="fr">Français</option>
+                        <option value="ar">العربية</option>
+                        <option value="ar-islamic">العربية (إسلامي)</option>
+                        <option value="zh">中文</option>
+                        <option value="pt">Português</option>
+                        <option value="pt-BR">Português (Brasil)</option>
+                        <option value="es">Español</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-6xl font-bold font-display mb-4" data-i18n="gyms_title">Gyms & Partners</h1>
+                <p class="text-silver-400 text-lg max-w-2xl mx-auto" data-i18n="gyms_subtitle">Connecting professional coaches with premium fitness centers. Grow your business with Pi.</p>
+                
+                <!-- Balance Display -->
+                <div class="mt-6 inline-flex items-center gap-2 bg-silver-800 px-6 py-2 rounded-full border border-silver-700 shadow-lg">
+                    <span class="text-silver-400" data-i18n="balance_label">Your Balance:</span>
+                    <span id="balance" class="text-primary-400 font-bold">--</span>
+                    <span class="text-primary-400 font-bold">π</span>
+                </div>
+            </div>
+
+            <!-- Mode Selection -->
+            <div class="max-w-4xl mx-auto mb-16">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div onclick="switchMode('coach')" id="coachModeCard" class="flex-1 glass-card p-8 rounded-3xl cursor-pointer border-2 border-primary-500 transition-all hover:bg-silver-800/50">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-primary-500/20 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            </div>
+                            <h2 class="text-xl font-bold" data-i18n="coach_seeking_gym">Coach Seeking Gym</h2>
+                        </div>
+                        <p class="text-silver-400 text-sm" data-i18n="coach_seeking_desc">I am a professional coach looking for a space to train my clients.</p>
+                    </div>
+
+                    <div onclick="switchMode('gym')" id="gymModeCard" class="flex-1 glass-card p-8 rounded-3xl cursor-pointer border-2 border-transparent transition-all hover:bg-silver-800/50">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                            </div>
+                            <h2 class="text-xl font-bold" data-i18n="gym_seeking_coach">Gym Seeking Coach</h2>
+                        </div>
+                        <p class="text-silver-400 text-sm" data-i18n="gym_seeking_desc">We are a fitness center looking for qualified professional coaches.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forms -->
+            <div id="form-container" class="max-w-3xl mx-auto">
+                <!-- Coach Form -->
+                <form id="coachAdForm" class="glass-card p-8 rounded-3xl space-y-6">
+                    <h3 class="text-2xl font-bold mb-6 gradient-text" data-i18n="advertise_as_coach">Post Coach Advertisement</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm text-silver-400" data-i18n="name">Name</label>
+                            <input type="text" id="c_name" required class="w-full bg-silver-900 border border-silver-700 rounded-xl p-3 focus:ring-2 focus:ring-primary-500 outline-none">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm text-silver-400" data-i18n="specialty">Specialty</label>
+                            <input type="text" id="c_spec" required class="w-full bg-silver-900 border border-silver-700 rounded-xl p-3 focus:ring-2 focus:ring-primary-500 outline-none">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm text-silver-400" data-i18n="level">Level</label>
+                            <select id="c_level" class="w-full bg-silver-900 border border-silver-700 rounded-xl p-3 focus:ring-2 focus:ring-primary-500 outline-none">
+                                <option value="junior">Junior</option>
+                                <option value="mid">Mid-Level</option>
+                                <option value="senior">Senior</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm text-silver-400" data-i18n="city">City</label>
+                            <input type="text" id="c_city" required class="w-full bg-silver-900 border border-silver-700 rounded-xl p-3 focus:ring-2 focus:ring-primary-500 outline-none">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm text-silver-400" data-i18n="gym_type">Required Gym Type</label>
+                            <input type="text" id="c_gym_type" placeholder="e.g. Crossfit, Yoga Studio" class="w-full bg-silver-900 border border-silver-700 rounded-xl p-3 focus:ring-2 focus:ring-primary-500 outline-none">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm text-silver-400" data-i18n="trainees_count">Expected Trainees</label>
+                            <input type="number" id="c_trainees" required class="w-full bg-silver-900 border border-silver-700 rounded-xl p-3 focus:ring-2 focus:ring-primary-500 outline-none">
+                        </div>
+                    </div>
+                    <button type="button" onclick="handleAdPayment('coach', 15)" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-primary-500/30 transition-all transform hover:scale-[1.01]">
+                        Pay & Publish Ad (15 π)
+                    </button>
+                </form>
+
+                <!-- Gym Form -->
+                <form id="gymAdForm" class="glass-card p-8 rounded-3xl space-y-6 hidden">
+                    <h3 class="text-2xl font-bold mb-6 gradient-text" data-i18n="advertise_as_gym">Post Gym Vacancy</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm text-silver-400" data-i18n="gym_name">Gym Name</label>
+                            <input type="text" id="g_name" required class="w-full bg-silver-900 border border-silver-700 rounded-xl p-3 focus:ring-2 focus:ring-primary-500 outline-none">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm text-silver-400" data-i18n="city">City</label>
+                            <input type="text" id="g_city" required class="w-full bg-silver-900 border border-silver-700 rounded-xl p-3 focus:ring-2 focus:ring-primary-500 outline-none">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm text-silver-400" data-i18n="required_spec">Required Specialty</label>
+                            <input type="text" id="g_spec" required class="w-full bg-silver-900 border border-silver-700 rounded-xl p-3 focus:ring-2 focus:ring-primary-500 outline-none">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm text-silver-400" data-i18n="required_exp">Required Experience (Years)</label>
+                            <input type="number" id="g_exp" required class="w-full bg-silver-900 border border-silver-700 rounded-xl p-3 focus:ring-2 focus:ring-primary-500 outline-none">
+                        </div>
+                        <div class="space-y-2 md:col-span-2">
+                            <label class="text-sm text-silver-400" data-i18n="contract_type">Contract Type</label>
+                            <select id="g_contract" class="w-full bg-silver-900 border border-silver-700 rounded-xl p-3 focus:ring-2 focus:ring-primary-500 outline-none">
+                                <option value="full-time">Full-Time</option>
+                                <option value="part-time">Part-Time</option>
+                                <option value="freelance">Freelance / Commission</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" onclick="handleAdPayment('gym', 20)" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-green-500/30 transition-all transform hover:scale-[1.01]">
+                        Pay & Publish Vacancy (20 π)
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <script src="translations.js"></script>
+    <script src="script.js"></script>
+    <script>
+        function switchMode(mode) {
+            const coachForm = document.getElementById('coachAdForm');
+            const gymForm = document.getElementById('gymAdForm');
+            const coachCard = document.getElementById('coachModeCard');
+            const gymCard = document.getElementById('gymModeCard');
+
+            if (mode === 'coach') {
+                coachForm.classList.remove('hidden');
+                gymForm.classList.add('hidden');
+                coachCard.classList.add('border-primary-500');
+                coachCard.classList.remove('border-transparent');
+                gymCard.classList.remove('border-green-500');
+                gymCard.classList.add('border-transparent');
+            } else {
+                coachForm.classList.add('hidden');
+                gymForm.classList.remove('hidden');
+                gymCard.classList.add('border-green-500');
+                gymCard.classList.remove('border-transparent');
+                coachCard.classList.remove('border-primary-500');
+                coachCard.classList.add('border-transparent');
+            }
+        }
+
+        async function handleAdPayment(type, amount) {
+            const formId = type === 'coach' ? 'coachAdForm' : 'gymAdForm';
+            const form = document.getElementById(formId);
+            
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            if (typeof payPi === 'function') {
+                try {
+                    await payPi(amount);
+                    alert('Advertisement published successfully! Your listing is now live.');
+                    form.reset();
+                } catch (err) {
+                    console.error('Advertisement payment failed:', err);
+                }
+            } else {
+                alert('Pi Payment system is initializing. Please try again in a moment.');
+            }
+        }
+    </script>
+</body>
+</html>
